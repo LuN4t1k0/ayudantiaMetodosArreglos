@@ -1,35 +1,29 @@
-const listaDeInvitados = document.querySelector("#invitados") 
-const invitadoInput = document.querySelector("#nuevoInvitado") 
-const btnAgregar = document.querySelector("#agregarInvitado")
+const listaDeInvitados = document.querySelector("#invitados");
+const invitadoInput = document.querySelector("#nuevoInvitado");
+const btnAgregar = document.querySelector("#agregarInvitado");
+const invitados = [];
+/* Actualizamos la información en el HTML */
 
-const invitados = []
-
-const agregarInvitado = () => {
-  //Agregar invitados al arreglo
-  const nuevoInvitado = invitadoInput.value
-  invitados.push({id:Date.now(), nombre : nuevoInvitado})
-  invitadoInput.value = "" // vaciar el input
-
-  //actualizar la informacion en el html
-  let html = ""
-  for (let invitado of invitados) {
-    html+= /*html*/`<li>${invitado.nombre} <button onclick="borrar(${invitado.id})"> x </button></li>`  
+const renderInvitados = () => {
+  let html = "";
+  for (const invitado of invitados) {
+    html += /*html*/ `<li>${invitado.nombre}<button onclick="eliminarInvitado(${invitado.id})"> x </button></li>`;
   }
+  listaDeInvitados.innerHTML = html;
+};
 
-  listaDeInvitados.innerHTML = html
-  console.log(invitados);
-}
+const agregarInvitados = () => {
+  const nuevoInvitado = { id: Date.now(), nombre: invitadoInput.value };
+  invitados.push(nuevoInvitado);
+  invitadoInput.value = "";
+  renderInvitados()
+};
 
-const borrar = (id) => {
-  const index = invitados.findIndex((ele) => ele.id === id)
+const eliminarInvitado = (id) => {
+  const index =  invitados.findIndex(ele => ele.id === id)
   invitados.splice(index, 1)
-
-  let html = ""
-  for (let invitado of invitados) {
-    html+= /*html*/ `<li>${invitado.nombre} <button onclick="borrar(${invitado.id})"> x </button></li>`
-    
-  }
-  listaDeInvitados.innerHTML = html
+  renderInvitados()
 }
 
-btnAgregar.addEventListener("click", agregarInvitado)
+
+btnAgregar.addEventListener('click', agregarInvitados)
